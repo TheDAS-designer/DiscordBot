@@ -33,6 +33,7 @@ app.use(cors())
 app.use(express.urlencoded({extended: true}));
 
 app.post('/ticket', async (request, response) => {
+  console.log("request:", request);      // the information in your POST request's body
   console.log("request.body:", request.body);      // the information in your POST request's body
 //   const guild = await client.guilds.fetch('guild_id');
 //   guild.channels.create(request.body.ticketName);
