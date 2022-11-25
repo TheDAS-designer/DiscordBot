@@ -89,9 +89,6 @@ client.handleEvents()
 client.handleCommands()
 client.handleComponents()
 client.login(token)
-getProvider().then(async (provider) => {
-  console.log("getBlockNumber",await provider.getBlockNumber())
-})
 ;(async () => {
   await connect(mongodbToken).catch(console.error)
 })()
