@@ -1,6 +1,5 @@
 const {SlashCommandBuilder} = require('discord.js')
 const mongoose = require('mongoose')
-const guild = require('../../schemas/guild')
 const Guild = require('../../schemas/guild')
 module.exports = {
     data: new SlashCommandBuilder()
