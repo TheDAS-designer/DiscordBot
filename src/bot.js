@@ -2,7 +2,7 @@ require('dotenv').config()
 const { ethers } = require('ethers')
 const mongoose = require('mongoose')
 const User = require('./schemas/user')
-const {getProvider} =require("./web3/contract")
+const Config = require('./schemas/config')
 
 const { token, mongodbToken } = process.env
 const { connect } = require('mongoose')
@@ -13,7 +13,12 @@ const fs = require('fs')
 // const ws = this.ws = new WebSocket(null, undefined, opts);
 // const ws = (this.connection = new WebSocket(null, null, {agent: new proxy('http://127.0.0.1:7890')}));
 
-const client = new Client({ intents: GatewayIntentBits.Guilds })
+const client = new Client({ intents: [
+  GatewayIntentBits.Guilds,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.MessageContent,
+  GatewayIntentBits.GuildMembers,
+], })
 
 client.buttons = new Collection()
 client.commands = new Collection()
@@ -73,7 +78,7 @@ owner:\t${address}`
         address
       })
 
-      await userProfile.save().catch(console.error)
+      userProfile.save().catch(console.error)
       response.send({ data: 0 })
     } else {
       
@@ -91,4 +96,15 @@ client.handleComponents()
 client.login(token)
 ;(async () => {
   await connect(mongodbToken).catch(console.error)
+  let config = await Config.findOne()
+  if(!config) {
+    config = await new Config({
+      _id: mongoose.Types.ObjectId(),
+      isOgPeriod: true
+    })
+
+    config.save().catch(console.error)
+  }
+
+  await require("./web3/contract.js")["test3"](client)
 })()

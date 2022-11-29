@@ -18,8 +18,12 @@ module.exports = {
        .setLabel("set token limit")
        .setStyle(ButtonStyle.Primary)
 
+
+       const ab = new ActionRowBuilder()
+       ab.addComponents(button1)
+
        await interaction.reply({
-        components: [new ActionRowBuilder().addComponents(button1)]
+        components: [ab]
        })
     }
 }

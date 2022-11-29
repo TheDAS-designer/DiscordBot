@@ -5,8 +5,7 @@ const guildSchema = new Schema({
     discordId: {type: String, required: false},
     discordName: {type: String, required: false},
     address: {type: String, required: false},
-    roleCode: {type: Number, required: false, default: 100},
-    isOG: {type: Boolean, require: false, default: false}
+    isOG: {type: Boolean, require: false}
 })
 
-module.exports = model("User", guildSchema, "users");
+module.exports = model("UserTest", guildSchema, "userTests");
