@@ -8,12 +8,12 @@ module.exports = {
         let config = await Config.findOne()
         
         if(!config) {
-            interaction.reply({content: `[Config] is not exist.`})
+            interaction.reply({content: `[Config] is not exist.`, ephemeral: true})
             return 
         }
 
         if(!config.isOgPeriod) {
-            interaction.reply({content: `Succeeded.`})
+            interaction.reply({content: `Succeeded.`, ephemeral: true})
             return
         }
         config.isOgPeriod = false

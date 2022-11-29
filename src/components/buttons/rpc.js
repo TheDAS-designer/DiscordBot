@@ -1,5 +1,5 @@
 const {ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder} = require("discord.js")
-
+const Config = require("../../schemas/config")
 module.exports = {
     data: {
         name: `JSON_RPC`

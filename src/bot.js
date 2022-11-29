@@ -13,12 +13,14 @@ const fs = require('fs')
 // const ws = this.ws = new WebSocket(null, undefined, opts);
 // const ws = (this.connection = new WebSocket(null, null, {agent: new proxy('http://127.0.0.1:7890')}));
 
-const client = new Client({ intents: [
-  GatewayIntentBits.Guilds,
-  GatewayIntentBits.GuildMessages,
-  GatewayIntentBits.MessageContent,
-  GatewayIntentBits.GuildMembers,
-], })
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
+  ],
+})
 
 client.buttons = new Collection()
 client.commands = new Collection()
@@ -50,7 +52,7 @@ app.post('/ticket', async (request, response) => {
   //   const guild = await client.guilds.fetch('guild_id');
   //   guild.channels.create(request.body.ticketName);
   const discordId = request.body.discordId
-  const discordUserName = request.body.discordUserName
+  const discordName = request.body.discordUserName
   const address = request.body.address
   const sign = request.body.sign
 
@@ -59,7 +61,7 @@ purpose:\tVerify address
 
 discordId:\t${discordId}
 
-discordName:\t${discordUserName}
+discordName:\t${discordName}
 
 owner:\t${address}`
 
@@ -68,25 +70,24 @@ owner:\t${address}`
     address.toUpperCase()
   ) {
     // record in db
-    let userProfile = User.findOne({ address })
-    console.log("userProfile", userProfile)
+    let userProfile = await User.findOne({ address })
+    console.log('userProfile', userProfile)
     if (!userProfile) {
       userProfile = await new User({
         _id: mongoose.Types.ObjectId(),
         discordId,
-        discordUserName,
-        address
+        discordName,
+        address,
       })
-
-      userProfile.save().catch(console.error)
-      response.send({ data: 0 })
-    } else {
-      
-      response.send({ data: 1 })
     }
-    return
+
+    userProfile.discordId = discordId
+    userProfile.discordName = discordName
+    userProfile.save().catch(console.error)
+    response.send({ msg: 0 })
+    return 
   }
-  response.send({ data: 2 })
+  response.send({ msg: 2 })
 })
 
 app.listen(3001)
@@ -97,14 +98,14 @@ client.login(token)
 ;(async () => {
   await connect(mongodbToken).catch(console.error)
   let config = await Config.findOne()
-  if(!config) {
+  if (!config) {
     config = await new Config({
       _id: mongoose.Types.ObjectId(),
-      isOgPeriod: true
+      isOgPeriod: true,
     })
 
     config.save().catch(console.error)
   }
 
-  await require("./web3/contract.js")["test3"](client)
+  await require('./web3/contract.js')['test3'](client)
 })()
