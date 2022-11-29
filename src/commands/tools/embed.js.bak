@@ -9,7 +9,7 @@ module.exports = {
        .setTitle(`$$$$$$$$$$$$$$$`)
        .setAuthor(
         {
-            url:"https://cn.pornhub.com/view_video.php?viewkey=ph5ff70c4f4a3e3",
+            url:"https://google.com",
             iconURL: interaction.user.displayAvatarURL(),
             name: interaction.user.tag
         }
