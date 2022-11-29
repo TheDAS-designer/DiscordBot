@@ -8,7 +8,8 @@ const configSchema = new Schema({
     isNewPlayerNotification: {type: Boolean, default: true},
     notificationChannelId: {type: String, require: false},
     ogRoleId: {type: String, require: false},
-    rpc: {type: String,  require: false, default: "https://bscrpc.com"}
+    rpc: {type: String,  require: false, default: "https://bscrpc.com"},
+    launchCount: {type: Number,  require: false, default: 0}
 })
 
 module.exports = model("Config", configSchema, "config");
