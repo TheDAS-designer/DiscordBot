@@ -86,7 +86,14 @@ async function sendToChannel(config, client, addresses, guildId) {
     await channel.send(`🎉🎉🎉 Welcome address:${addr} joined us! 🤗🤗🤗`)
   })
 }
+
+const guildId = "1041949667610603530"
 const test2 = async (client, isInit) => {
+  // check if guild create
+  let guildProfile = await Guild.findOne()
+  if(!guildProfile || !guildProfile.guildId) return
+
+
   decimals = await contract.decimals()
   let config = await Config.findOne()
 

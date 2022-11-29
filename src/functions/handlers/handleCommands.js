@@ -22,8 +22,8 @@ module.exports = (client) => {
       }
     }
 
-    const clientId = '1041353063937622076'
-    const guildId = '1041949667610603530'
+    const clientId = "1041353063937622076"
+    const guildId = process.env.GUILD_ID
     const rest = new REST({version: '10'}).setToken(process.env.token)
 
     try {
