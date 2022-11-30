@@ -6,9 +6,18 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName('launch')
     // .setDescription("Return information from a database")
-    .setDescription('管理可以用这个命令启动bot的后台部分, 顺便跟群友打个招呼')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDescription('Core Team 成员可以用这个命令启动bot的后台部分, 顺便跟群友打个招呼')
+    ,
   async execute(interaction, client) {
+    const coreTeamId = "1036858784582221875"
+    // if not core team role return
+    const { roles } = interaction.member
+
+    if (!roles.cache.has(coreTeamId)) {
+        await interaction.reply({content: "Not a core team member", ephemeral: true})
+        return
+    }
+
     let guildProfile = await Guild.findOne({ guildId: interaction.guild.id })
     if (!guildProfile) {
       guildProfile = await new Guild({
@@ -19,7 +28,6 @@ module.exports = {
           ? interaction.guild.iconURL()
           : 'None',
       })
-
       await guildProfile.save().catch(console.error)
 
       await interaction.reply({
@@ -36,7 +44,7 @@ module.exports = {
       let count = config.launchCount
       if (count > 1) {
         await interaction.reply({
-          content: `${interaction.user.tag}：“大家都围过来一下嗷， 我给大家宣布个事， 我是个傻逼！！！”`,
+          content: `${interaction.user.tag} R U 🤡🤡🤡🤡🤡”`,
         })
         count += 1
         config.launchCount = count
