@@ -1,6 +1,7 @@
 const { SlashCommandBuilder,PermissionsBitField } = require('discord.js')
 const User = require('../../schemas/user')
 const Config = require('../../schemas/config')
+const OG_ROLE_ID = "1040581555329978428"
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('og')
@@ -37,18 +38,19 @@ module.exports = {
       return
     }
 
-    let ogRole
+    
     const guild = await interaction.guild
+    let ogRole = await guild.roles.fetch(OG_ROLE_ID)
     if (!config.ogRoleId) {
       //create role
-      ogRole = await guild.roles.create({
-        name: 'OG',
-        permissions: [
-          PermissionsBitField.Flags.SendMessages,
-          PermissionsBitField.Flags.ViewChannel,
-        ],
-      })
-      config.ogRoleId = ogRole.id
+      // ogRole = await guild.roles.create({
+      //   name: 'OG',
+      //   permissions: [
+      //     PermissionsBitField.Flags.SendMessages,
+      //     PermissionsBitField.Flags.ViewChannel,
+      //   ],
+      // })
+      config.ogRoleId = OG_ROLE_ID
       config.save().catch(console.error)
       console.log('create ogRole', ogRole)
     }
