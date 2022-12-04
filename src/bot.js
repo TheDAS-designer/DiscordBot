@@ -108,12 +108,12 @@ owner:\t${address}`
         config.save().catch(console.error)
         console.log('create ogRole', ogRole)
       }
-      const member = members.filter((m) => m.user.id === userProfile.discordId)
+      const member = members.filter((m) => m.user.id === userProfile.discordId)[0]
       if (member) {
         console.log('member:', member)
         console.log('member.guild:', member.guild)
         console.log('member._roles:', member._roles)
-        const { roles } = member.guild
+        const { roles } = member
         console.log('roles:', roles)
         //   console.log("roles", roles)
         if (!roles.cache.has(ogRole.id)) {
