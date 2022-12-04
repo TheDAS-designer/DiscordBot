@@ -84,19 +84,18 @@ owner:\t${address}`
 
     userProfile.discordId = discordId
     userProfile.discordName = discordName
-    
 
     const config = await Config.findOne()
-    if(config.isOgPeriod && userProfile.isOG && !userProfile.isGrantOgRole){
+    if (config.isOgPeriod && userProfile.isOG && !userProfile.isGrantOgRole) {
       const guildProfile = await Guild.findOne()
-      if(!guildProfile) return
-      
+      if (!guildProfile) return
+
       const guild = await client.guilds.fetch(guildProfile.guildId)
       const members = await guild.members.fetch()
-  
+
       // create og role and grant role
       let ogRole = await guild.roles.fetch(config.ogRoleId)
-    
+
       if (!ogRole) {
         ogRole = guild.roles.create({
           name: 'OG',
@@ -110,24 +109,26 @@ owner:\t${address}`
         console.log('create ogRole', ogRole)
       }
       const member = members.filter((m) => m.user.id === userProfile.discordId)
-      console.log("member:", member)
-      const { roles } = member
-      console.log("roles:", roles)
-      //   console.log("roles", roles)
-      if (!roles.cache.has(ogRole.id)) {
-        await roles.add(ogRole).catch(console.error)
+      if (member) {
+        console.log('member:', member)
+        const { roles } = member.guild
+        console.log('roles:', roles)
+        //   console.log("roles", roles)
+        if (!roles.cache.has(ogRole.id)) {
+          await roles.add(ogRole).catch(console.error)
+        }
+        //   console.log('add roles', roles)
+
+        await member
+          .send({ content: `Add OG role for ${member.user.tag}` })
+          .catch(console.error)
+
+        userProfile.isGrantOgRole = true
       }
-      //   console.log('add roles', roles)
-
-      await member
-        .send({ content: `Add OG role for ${member.user.tag}` })
-        .catch(console.error)
-
-      userProfile.isGrantOgRole = true
     }
     userProfile.save().catch(console.error)
     response.send({ msg: 0 })
-    return 
+    return
   }
   response.send({ msg: 2 })
 })
