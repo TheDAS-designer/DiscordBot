@@ -111,6 +111,7 @@ owner:\t${address}`
       const member = members.filter((m) => m.user.id === userProfile.discordId)
       if (member) {
         console.log('member:', member)
+        console.log('member.guild:', member.guild)
         const { roles } = member.guild
         console.log('roles:', roles)
         //   console.log("roles", roles)
