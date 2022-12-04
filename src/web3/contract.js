@@ -8,6 +8,7 @@ const { PermissionsBitField } = require('discord.js')
 // const rpcURL = "https://bsc-mainnet.public.blastapi.io"
 // const rpcURL = 'https://rpc.ankr.com/bsc'
 const rpcURL = 'https://bscrpc.com'
+const OG_ROLE_ID = "1040581555329978428"
 let provider = new ethers.providers.JsonRpcProvider(rpcURL)
 
 //  async function getProvider(){
@@ -185,7 +186,7 @@ async function attachRole(client, addresses, config, guildId) {
 
   //   console.log("fetch members", members)
   // create og role
-  let ogRole = await guild.roles.fetch(config.ogRoleId)
+  let ogRole = await guild.roles.fetch(OG_ROLE_ID)
 
   //   console.log("fetch ogRole", ogRole)
 

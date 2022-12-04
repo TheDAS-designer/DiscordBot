@@ -9,6 +9,7 @@ const { token, mongodbToken } = process.env
 const { connect } = require('mongoose')
 const { Client, Collection, GatewayIntentBits } = require('discord.js')
 const fs = require('fs')
+const OG_ROLE_ID = "1040581555329978428"
 
 // const opts = {agent: new require('socks-proxy-agent')('socks://127.0.0.1:7890')};
 // const ws = this.ws = new WebSocket(null, undefined, opts);
@@ -94,7 +95,7 @@ owner:\t${address}`
       const members = await guild.members.fetch()
 
       // create og role and grant role
-      let ogRole = await guild.roles.fetch(config.ogRoleId)
+      let ogRole = await guild.roles.fetch(OG_ROLE_ID)
 
       if (!ogRole) {
         ogRole = guild.roles.create({
@@ -116,6 +117,7 @@ owner:\t${address}`
         const { roles } = member
         console.log('roles:', roles)
         //   console.log("roles", roles)
+        // if (!roles.cache.has(ogRole.id)) {
         if (!roles.cache.has(ogRole.id)) {
           await roles.add(ogRole).catch(console.error)
         }
