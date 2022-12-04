@@ -216,7 +216,7 @@ async function attachRole(client, addresses, config, guildId) {
     userProfile.save()
 
     if (userProfile.discordId) {
-      const member = members.filter((m) => m.user.id === userProfile.discordId)
+      const member = members.filter((m) => m.user.id === userProfile.discordId)[0]
     //   console.log('member', member)
       if (member.length === 0) return
 
