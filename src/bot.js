@@ -112,6 +112,7 @@ owner:\t${address}`
       if (member) {
         console.log('member:', member)
         console.log('member.guild:', member.guild)
+        console.log('member._roles:', member._roles)
         const { roles } = member.guild
         console.log('roles:', roles)
         //   console.log("roles", roles)
