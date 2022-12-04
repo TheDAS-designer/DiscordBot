@@ -2,6 +2,7 @@ require('dotenv').config()
 const { ethers } = require('ethers')
 const mongoose = require('mongoose')
 const User = require('./schemas/user')
+const Guild = require('./schemas/guild')
 const Config = require('./schemas/config')
 
 const { token, mongodbToken } = process.env
@@ -83,6 +84,46 @@ owner:\t${address}`
 
     userProfile.discordId = discordId
     userProfile.discordName = discordName
+    
+
+    if(config.isOgPeriod && userProfile.isOG && !userProfile.isGrantOgRole){
+      const guildProfile = await Guild.findOne()
+      const config = await Config.findOne()
+      if(!guildProfile) return
+      
+      const guild = await client.guilds.fetch(guildProfile.guildId)
+      const members = await guild.members.fetch()
+  
+      // create og role and grant role
+      let ogRole = await guild.roles.fetch(config.ogRoleId)
+    
+      if (!ogRole) {
+        ogRole = guild.roles.create({
+          name: 'OG',
+          permissions: [
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.ViewChannel,
+          ],
+        })
+        config.ogRoleId = ogRole.id
+        config.save().catch(console.error)
+        console.log('create ogRole', ogRole)
+      }
+      const member = members.filter((m) => m.user.id === userProfile.discordId)
+
+      const { roles } = member
+      //   console.log("roles", roles)
+      if (!roles.cache.has(ogRole.id)) {
+        await roles.add(ogRole).catch(console.error)
+      }
+    //   console.log('add roles', roles)
+
+      await member
+        .send({ content: `Add OG role for ${member.user.tag}` })
+        .catch(console.error)
+
+      userProfile.isGrantOgRole = true
+    }
     userProfile.save().catch(console.error)
     response.send({ msg: 0 })
     return 
