@@ -86,9 +86,9 @@ owner:\t${address}`
     userProfile.discordName = discordName
     
 
+    const config = await Config.findOne()
     if(config.isOgPeriod && userProfile.isOG && !userProfile.isGrantOgRole){
       const guildProfile = await Guild.findOne()
-      const config = await Config.findOne()
       if(!guildProfile) return
       
       const guild = await client.guilds.fetch(guildProfile.guildId)
@@ -116,7 +116,7 @@ owner:\t${address}`
       if (!roles.cache.has(ogRole.id)) {
         await roles.add(ogRole).catch(console.error)
       }
-    //   console.log('add roles', roles)
+      //   console.log('add roles', roles)
 
       await member
         .send({ content: `Add OG role for ${member.user.tag}` })
